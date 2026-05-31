@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content=
+"width=device-width,initial-scale=1.0">
+
+<title>
+ESP32-CAM Dashboard
+</title>
+
+<link
+rel="stylesheet"
+href="/style.css">
+
+<link
+href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+rel="stylesheet">
+
+<script
+src=
+"https://cdn.jsdelivr.net/npm/chart.js">
+</script>
+
+<script
+src="/app.js"
+defer>
+</script>
+
+</head>
+
+<body>
+
+<div class="app-container">
+
+<div id="overlay"></div>
+
+<!-- SIDEBAR -->
+
+<aside
+class="sidebar"
+id="sidebar">
+
+<div class="brand">
+
+<div class="brand-logo">
+
+<i class=
+"fa-solid fa-camera">
+</i>
+
+</div>
+
+<div class="brand-text">
+
+<h2>ESP32 AI</h2>
+
+<span>
+Surveillance OS
+</span>
+
+</div>
+
+</div>
+
+<nav class="sidebar-nav">
+
+<ul>
+
+<li class="active">
+<a href="#dashboard">
+<i class=
+"fa-solid fa-chart-line">
+</i>
+<span>Dashboard</span>
+</a>
+</li>
+
+<li>
+<a href="#camera">
+<i class=
+"fa-solid fa-video">
+</i>
+<span>Live Camera</span>
+</a>
+</li>
+
+<li>
+<a href="#recordings">
+<i class=
+"fa-solid fa-film">
+</i>
+<span>Recordings</span>
+</a>
+</li>
+
+<li>
+<a href="#files">
+<i class=
+"fa-solid fa-folder">
+</i>
+<span>File Manager</span>
+</a>
+</li>
+
+<li>
+<a href="#cloud">
+<i class=
+"fa-solid fa-cloud">
+</i>
+<span>Cloud Hub</span>
+</a>
+</li>
+
+<li>
+<a href="#ai">
+<i class=
+"fa-solid fa-brain">
+</i>
+<span>AI Detection</span>
+</a>
+</li>
+
+<li>
+<a href="#ota">
+<i class=
+"fa-solid fa-upload">
+</i>
+<span>OTA Update</span>
+</a>
+</li>
+
+<li>
+<a href="#settings">
+<i class=
+"fa-solid fa-gear">
+</i>
+<span>Settings</span>
+</a>
+</li>
+
+</ul>
+
+</nav>
+
+<div class="sidebar-footer">
+
+<div class="status-dot"></div>
+
+<span>
+ESP32 Online
+</span>
+
+</div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main-content">
+
+<header class="topbar">
+
+<div class="topbar-left">
+
+<button id="menuToggle">
+
+<i class=
+"fa-solid fa-bars">
+</i>
+
+</button>
+
+<h1>
+ESP32-CAM Dashboard
+</h1>
+
+</div>
+
+<div class="topbar-right">
+
+<div class="search-box">
+
+<i class=
+"fa-solid fa-magnifying-glass">
+</i>
+
+<input
+type="text"
+placeholder="Search">
+
+</div>
+
+</div>
+
+</header>
+
+<!-- DASHBOARD -->
+
+<section
+id="dashboard">
+
+<div class="welcome-card">
+
+<div>
+
+<h2>
+Dashboard Ready
+</h2>
+
+<p>
+ESP32-CAM AI Monitoring
+</p>
+
+</div>
+
+<div class="quick-actions">
+
+<button id="startStream">
+
+Start Stream
+
+</button>
+
+<button id="snapshotBtn">
+
+Snapshot
+
+</button>
+
+<button id="recordStart">
+
+Record
+
+</button>
+
+</div>
+
+</div>
+
+<!-- STATUS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<div class=
+"stat-icon cpu">
+
+<i class=
+"fa-solid fa-microchip">
+</i>
+
+</div>
+
+<div>
+
+<h3>CPU</h3>
+
+<p id="cpuUsage">
+0%
+</p>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class=
+"stat-icon ram">
+
+<i class=
+"fa-solid fa-memory">
+</i>
+
+</div>
+
+<div>
+
+<h3>RAM</h3>
+
+<p id="ramUsage">
+0 MB
+</p>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class=
+"stat-icon wifi">
+
+<i class=
+"fa-solid fa-wifi">
+</i>
+
+</div>
+
+<div>
+
+<h3>RSSI</h3>
+
+<p id="rssiValue">
+0 dBm
+</p>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class=
+"stat-icon uptime">
+
+<i class=
+"fa-solid fa-clock">
+</i>
+
+</div>
+
+<div>
+
+<h3>Uptime</h3>
+
+<p id="uptime">
+00:00:00
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CAMERA -->
+
+<div class="dashboard-grid">
+
+<section
+id="camera"
+class="panel">
+
+<div class="panel-header">
+
+<h3>
+Live Camera
+</h3>
+
+<div class="panel-actions">
+
+<button id="startStream">
+Start
+</button>
+
+<button id="stopStream">
+Stop
+</button>
+
+<button id="snapshotBtn">
+Snapshot
+</button>
+
+</div>
+
+</div>
+
+<div class="camera-wrapper">
+
+<img
+id="cameraStream"
+src=""
+alt="camera">
+
+</div>
+
+</section>
+
+<!-- CHART -->
+
+<section class="panel">
+
+<div class="panel-header">
+
+<h3>
+System Monitor
+</h3>
+
+</div>
+
+<canvas
+id="systemChart">
+</canvas>
+
+</section>
+
+</div>
+
+<!-- RECORD -->
+
+<section
+id="recordings"
+class="panel">
+
+<div class="panel-header">
+
+<h3>
+Recordings
+</h3>
+
+<div class="panel-actions">
+
+<button id="recordStart">
+
+REC START
+
+</button>
+
+<button id="recordStop">
+
+STOP
+
+</button>
+
+</div>
+
+</div>
+
+<p>
+
+SD Usage:
+
+<span id="sdUsage">
+
+0%
+
+</span>
+
+</p>
+
+</section>
+
+<!-- FILES -->
+
+<section
+id="files"
+class="panel">
+
+<div class="panel-header">
+
+<h3>
+File Manager
+</h3>
+
+<button
+id="refreshFiles">
+
+Refresh
+
+</button>
+
+</div>
+
+<div
+id="fileList"
+class="file-list">
+</div>
+
+</section>
+
+<!-- AI -->
+
+<section
+id="ai"
+class="panel">
+
+<div class="panel-header">
+
+<h3>
+AI Detection
+</h3>
+
+</div>
+
+<div class="ai-grid">
+
+<div class="ai-card">
+
+<h4>
+Detected Object
+</h4>
+
+<p id="detectedObject">
+none
+</p>
+
+</div>
+
+<div class="ai-card">
+
+<h4>
+Confidence
+</h4>
+
+<p id="confidence">
+0%
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- OTA -->
+
+<section
+id="ota"
+class="panel">
+
+<div class="panel-header">
+
+<h3>
+OTA Update
+</h3>
+
+</div>
+
+<input
+type="file"
+id="firmwareFile">
+
+<button
+id="uploadFirmware">
+
+Upload Firmware
+
+</button>
+
+<div class="progress-wrapper">
+
+<div
+id="progressBar"
+class="progress-bar">
+</div>
+
+</div>
+
+</section>
+
+<!-- SETTINGS -->
+
+<section
+id="settings"
+class="panel">
+
+<div class="panel-header">
+
+<h3>
+Settings
+</h3>
+
+</div>
+
+<div class="settings-grid">
+
+<div>
+
+<label>
+SSID
+</label>
+
+<input
+type="text"
+id="ssid">
+
+</div>
+
+<div>
+
+<label>
+Password
+</label>
+
+<input
+type="password"
+id="wifiPass">
+
+</div>
+
+<div>
+
+<label>
+Static IP
+</label>
+
+<input
+type="text"
+id="staticIP">
+
+</div>
+
+<div>
+
+<label>
+Resolution
+</label>
+
+<select id="resolution">
+
+<option>
+QVGA
+</option>
+
+<option>
+VGA
+</option>
+
+<option>
+SVGA
+</option>
+
+<option>
+UXGA
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<button id="saveSettings">
+
+Save Config
+
+</button>
+
+</section>
+
+</section>
+
+</main>
+
+</div>
+
+</body>
+</html>
